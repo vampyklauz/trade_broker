@@ -1,0 +1,20 @@
+body{
+	background-color: #252830;
+	color: white;
+}
+
+label{font-weight: lighter; }
+.text-success{color: #1BC98E; }
+.text-primary{color: #5aa1de; }
+.text-danger{color: #E64759; }
+
+.display_capital{
+	font-size: 20px;
+	margin-bottom: 5px;
+}
+
+.edit{
+	color: #1bc98e;
+    cursor: pointer;
+    margin-left: 20px;
+}

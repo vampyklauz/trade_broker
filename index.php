@@ -1,130 +1,212 @@
-<script src="jquery.js"></script>
-<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"></link>
-<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css"></link>
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<br><br>
-<div class="row" >
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Trade Broker</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css"/>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
 	
-	<div class="col-xs-6">
-		Capital: <input type="text" id="capital">
-		<br><br>
-		Value: <input type="text" id="value2">
-		INCOME >: <input type="text" id="income2" value="400">
-		<input type="submit" value="Calculate" id="calculate2">
-		<br><br>
-		<br><br>
-		You must buy greater than a
-		<br>
-		Volume of: <span id="volumeof"></span><br>
-		Change of: <span id="changeof"></span><br>
-		Income: <span id="incomeof"></span>
-		<br><br>
-		OR
-		<br>
-		Volume of: <span id="volumeof2"></span><br>
-		Change of: <span id="changeof2"></span><br>
-		Income: <span id="incomeof2"></span>
-	</div>
-	<div class="col-xs-6">
-		<br><br>
-		Value: <input type="text" id="value">
-		Change: <input type="text" id="change">
-		<input type="submit" value="Calculate" id="calculate">
-		<br><br>
-		Volume: <input type="text" id="volume_data">
-		<input type="submit" value="Clear" id="clear_volume">
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="content col-xs-12">
+		<div class="row">
+			<div class="col-xs-6">
+			<h3 class="text-success">Buying Calculator</h3>
+			<div class="form-horizontal">
+				<div class="form-group">
+					<label for="capital" class="col-sm-2 control-label">Capital</label>
+					<div id="capital_wrapper" class="col-sm-10">
+						<input type="text" class="form-control" id="capital" placeholder="Investment" autofocus>
+						<p class="display_capital hide"><span id="capital_view"></span><i class="edit glyphicon glyphicon-edit" aria-hidden="true"></i></p>
+					</div>
+					
+				</div>
+				<div class="form-group">
+					<label for="b_value" class="col-sm-2 control-label">Value</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="b_value" placeholder="Current Price">
+					</div>
+					<label for="b_change" class="col-sm-2 control-label">Change</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="b_change" placeholder="Price Change">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="b_volume" class="col-sm-2 control-label">Volume</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="b_volume" placeholder="Stocks">
+					</div>
+					<button id="clear_volume" class="btn btn-warning" type="submit">Clear</button>
+					<div class="col-xs-2 pull-right">
+						<button id="b_calculate" class="btn btn-success pull-right" type="submit">Calculate</button>
+					</div>
+				</div>
+			</div>
 
-		<br><br><br>
-		VOLUME: <span id="volume"></span>
-		<br>
-		INCOME: <span id="income"></span>
-	</div>
-</div>
+			<div class="col-xs-12">
+				<h4 id="b_volume_view" class="text-success hide">Volume: &nbsp;&nbsp;<span></span></h4>
+				<h4 id="b_income_view" class="text-success hide">Income: &nbsp;&nbsp;<span></span></h4>
+			</div>
+			</div>
+			<div class="col-xs-6">
+				<h3 class="text-primary">Expected Income Calculator</h3>
+				<div class="form-horizontal">
+				<div class="form-group">
+					<label for="e_value" class="col-sm-2 control-label">Value</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="e_value" placeholder="Current Price">
+					</div>
+					<label for="e_income" class="col-sm-2 control-label">Income ></label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="e_income" placeholder="Expected Income">
+					</div>
 
+				</div>
+				<button id="e_calculate" class="btn btn-success pull-right" type="submit">Calculate</button>
+
+				<div class="col-xs-12">
+					<h5>You must buy greater than a </h5>
+					<div class="col-xs-6">
+						<h4 id="e_volume_view" class="text-primary hide">Volume of: &nbsp;&nbsp;<span></span></h4>
+						<h4 id="e_change_view" class="text-primary hide">Change of: &nbsp;&nbsp;<span></span></h4>
+						<h4 id="e_income_view" class="text-primary hide">Income: &nbsp;&nbsp;<span></span></h4>
+					</div>
+					<div class="col-xs-6">
+						<h4 id="e_volume2_view" class="text-primary hide">Volume of: &nbsp;&nbsp;<span></span></h4>
+						<h4 id="e_change2_view" class="text-primary hide">Change of: &nbsp;&nbsp;<span></span></h4>
+						<h4 id="e_income2_view" class="text-primary hide">Income: &nbsp;&nbsp;<span></span></h4>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
 
 <script>
-		
-	$('#calculate').click(function () {
-		 calculate();
+	$(function() {
+	  $('.form-horizontal, #capital_wrapper').on('keydown', 'input', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
 	})
+	$('#capital').focusout(function() {
+		var capital = $(this).val();
+		if( capital == '' ){
+			var r = prompt("Please input your Capital first");
+			capital = r;
+		}
+		if( capital && $.isNumeric(capital) ){
+			capital = currency(capital);
+			$(this).hide();
+			$('.display_capital').removeClass('hide');
+			$('#capital_view').html(capital);
+		}else{
+			alert('Please input a number')
+		}
+	});
 
-	$('#value, #change, #volume_data').keypress(function(e) {
+	$('.edit').click(function(){
+		$('.display_capital').addClass('hide');
+		$('#capital').show().focus().select();
+	});
+
+	$('#clear_volume').click(function(){
+		$('#b_volume').val('');
+	});
+
+	$('#b_calculate').click(function(){
+		calculate();
+	});
+
+	$('#b_value, #b_change, #b_volume').keypress(function(e) {
 	    if(e.which == 13) {
 	       calculate();
 	    }
 	});
 
-	$('#clear_volume').click(function(){
-		$('#volume_data').val('');
-	})
-
-	$('#calculate2').click(function(){
-		calculate2();
+	$('#e_calculate').click(function(){
+		e_calculate();
 	});
 
-	$('#value2, #income2').keypress(function(e) {
+	$('#e_value, #e_income').keypress(function(e) {
 	    if(e.which == 13) {
-	       calculate2();
+	       e_calculate();
 	    }
 	});
 
-	function calculate2(){
-		var capital2 = $('#capital').val();
-		var value2 = $('#value2').val();
-		var income2 = $('#income2').val();
-		var result = [];
-		var result2 = [];
-		for (var i = .02; i <= 2; i += .01 ) {
-			var change2 = parseFloat(i.toFixed(2));
-			var volume = capital2 / value2;
-			var c_income = volume * change2;
-			result = [volume,c_income,change2];
-			if( c_income > income2 ) { break; }
-		}
+	function e_calculate(){
+		var min = .01,
+			max = 2,
+			capital = $('#capital').val(),
+			e_value = $('#e_value').val(),
+			e_income = $('#e_income').val(),
+			result = [],
+			result2 = [];
 
-		for (var i = .02; i <= .6; i += .01 ) {
-			var change2 = parseFloat(i.toFixed(2));
-			var volume2 = ( capital2 / value2 ) /2;
-			var c_income2 = volume2 * change2;
-			result2 = [volume2,c_income2,change2];
-			if( c_income2 > income2 ) { break; }
-		}
-		console.log(result);
-		$('#volumeof').html( addCommas(parseInt(result[0]).toFixed(2)) );
-		$('#changeof').html( result[2] );
-		$('#incomeof').html( addCommas(parseInt(result[1]).toFixed(2)) );
+		if( capital ){
+			if( e_value && e_income ){
 
-		$('#volumeof2').html( addCommas(parseInt(result2[0]).toFixed(2)) );
-		$('#changeof2').html( result2[2] );
-		$('#incomeof2').html( addCommas(parseInt(result2[1]).toFixed(2)) );
+				for( var i = min; i <= max; i+= .01){
+					var e_change = parseFloat(i.toFixed(2));
+					var e_volume = capital / e_value;
+					var res_income = e_volume*e_change;
+					result = [e_volume,e_change,res_income];
+					if( res_income > e_income){break;}
+				}
+
+				for( var i = min; i <= max; i+= .01){
+					var e_change2 = parseFloat(i.toFixed(2));
+					var e_volume2 = ( capital / e_value ) /2;
+					var res_income2 = e_volume2*e_change2;
+					result2 = [e_volume2,e_change2,res_income2];
+					if( res_income2 > e_change2){break;}
+				}
+				$('#e_volume_view, #e_change_view, #e_income_view').removeClass('hide');
+				$('#e_volume_view>span').html(currency(result[0]));
+				$('#e_change_view>span').html(result[1]);
+				$('#e_income_view>span').html(currency(result[2]));
+
+				$('#e_volume2_view, #e_change2_view, #e_income2_view').removeClass('hide');
+				$('#e_volume2_view>span').html(currency(result[0]));
+				$('#e_change2_view>span').html(result[1]);
+				$('#e_income2_view>span').html(currency(result[2]));
+
+			}else{
+				alert('Value and Income are important')
+			}
+		}else{
+			alert('Please input your Capital first');
+		}
 
 	}
-
 
 	function calculate(){
-		var capital = $('#capital').val();
-		var value = $('#value').val();
-		var change = $('#change').val();
-		var volume_data = $('#volume_data').val();
+		var capital = $('#capital').val(),
+			b_value = $('#b_value').val(),
+			b_change = $('#b_change').val(),
+			b_volume = $('#b_volume').val();
 
-
-		var volume = (volume_data) ? volume_data : capital / value;
-		var income = volume * change;
-		console.log(volume);
-		$('#volume').html(addCommas(parseInt(volume).toFixed(2)));
-		$('#income').html(addCommas(parseInt(income).toFixed(2)));
+		if( capital ){
+			if( b_value && b_change ){
+				var volume = (b_volume) ? b_volume : capital / b_value;
+				var income = volume * b_change;
+				$('#b_volume_view').removeClass('hide');
+				$('#b_volume_view>span').html(currency(volume));
+				$('#b_income_view').removeClass('hide');
+				$('#b_income_view>span').html(currency(income));
+			}else{
+				alert('Value and Change are important');
+			}
+		}else{
+			alert('Please input your Capital first');
+		}
 	}
 
-	function addCommas(nStr)
-	{
-		nStr += '';
-		x = nStr.split('.');
-		x1 = x[0];
-		x2 = x.length > 1 ? '.' + x[1] : '';
-		var rgx = /(\d+)(\d{3})/;
-		while (rgx.test(x1)) {
-			x1 = x1.replace(rgx, '$1' + ',' + '$2');
-		}
-		return x1 + x2;
+	function currency(money){
+		var currency = 'P ';
+		var money = parseInt(money);
+		return currency+ money.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
 	}
 </script>
