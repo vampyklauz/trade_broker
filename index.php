@@ -46,7 +46,7 @@
 				</div>
 			</div>
 
-			<div class="col-xs-12">
+			<div id="buying_view" class="col-xs-12">
 				<h4 id="b_volume_view" class="text-success hide">Volume: &nbsp;&nbsp;<span></span></h4>
 				<h4 id="b_income_view" class="text-success hide">Income: &nbsp;&nbsp;<span></span></h4>
 			</div>
@@ -165,12 +165,12 @@
 				}
 				$('#e_volume_view, #e_change_view, #e_income_view').removeClass('hide');
 				$('#e_volume_view>span').html(currency(result[0]));
-				$('#e_change_view>span').html(result[1]);
+				$('#e_change_view>span').html( (parseFloat(e_value)+parseFloat(result[1])) );
 				$('#e_income_view>span').html(currency(result[2]));
 
 				$('#e_volume2_view, #e_change2_view, #e_income2_view').removeClass('hide');
 				$('#e_volume2_view>span').html(currency(result[0]));
-				$('#e_change2_view>span').html(result[1]);
+				$('#e_change2_view>span').html( (parseFloat(e_value)+parseFloat(result[1])) );
 				$('#e_income2_view>span').html(currency(result[2]));
 
 			}else{
@@ -191,11 +191,21 @@
 		if( capital ){
 			if( b_value && b_change ){
 				var volume = (b_volume) ? b_volume : capital / b_value;
-				var income = volume * b_change;
-				$('#b_volume_view').removeClass('hide');
+				var spent_raw = volume*b_value;
+				var sell_raw = volume*b_change;
+				var spent = spent_raw+(spent_raw*.00295);
+				var sell = sell_raw-(sell_raw*.00795);
+				var income = sell-spent;
+				/*$('#b_volume_view').removeClass('hide');
 				$('#b_volume_view>span').html(currency(volume));
 				$('#b_income_view').removeClass('hide');
-				$('#b_income_view>span').html(currency(income));
+				$('#b_income_view>span').html(currency(income));*/
+				$('#buying_view').html('\
+					<h4 class="text-success">Volume: &nbsp;&nbsp;<span>'+volume+'</span></h4>\
+					<h4 class="text-success">Spent: &nbsp;&nbsp;<span>'+currency(spent)+'</span></h4>\
+					<h4 class="text-success">Sell: &nbsp;&nbsp;<span>'+currency(sell)+'</span></h4>\
+					<h4 class="text-success">Income: &nbsp;&nbsp;<span>'+currency(income)+'</span></h4>\
+					')
 			}else{
 				alert('Value and Change are important');
 			}
@@ -204,8 +214,8 @@
 		}
 	}
 
-	function currency(money){
-		var currency = 'P ';
+	function currency(money,sign){
+		var currency = sign || 'P ';
 		var money = parseInt(money);
 		return currency+ money.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
 	}
