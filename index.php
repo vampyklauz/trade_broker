@@ -17,7 +17,7 @@
 			<h3 class="text-success">Buying Calculator</h3>
 			<div class="form-horizontal">
 				<div class="form-group">
-					<label for="capital" class="col-sm-2 control-label">Capital</label>
+					<label for="capital" class="col-sm-2 control-label">Cash</label>
 					<div id="capital_wrapper" class="col-sm-10">
 						<input type="text" class="form-control" id="capital" placeholder="Investment" autofocus>
 						<p class="display_capital hide"><span id="capital_view"></span><i class="edit glyphicon glyphicon-edit" aria-hidden="true"></i></p>
@@ -25,17 +25,17 @@
 					
 				</div>
 				<div class="form-group">
-					<label for="b_value" class="col-sm-2 control-label">Value</label>
+					<label for="b_value" class="col-sm-2 control-label">BUY</label>
 					<div class="col-sm-4">
 						<input type="text" class="form-control" id="b_value" placeholder="Current Price">
 					</div>
-					<label for="b_change" class="col-sm-2 control-label">Change</label>
+					<label for="b_change" class="col-sm-2 control-label">SELL</label>
 					<div class="col-sm-4">
 						<input type="text" class="form-control" id="b_change" placeholder="Price Change">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="b_volume" class="col-sm-2 control-label">Volume</label>
+					<label for="b_volume" class="col-sm-2 control-label">Shares</label>
 					<div class="col-sm-4">
 						<input type="text" class="form-control" id="b_volume" placeholder="Stocks">
 					</div>
@@ -201,10 +201,10 @@
 				$('#b_income_view').removeClass('hide');
 				$('#b_income_view>span').html(currency(income));*/
 				$('#buying_view').html('\
-					<h4 class="text-success">Volume: &nbsp;&nbsp;<span>'+volume+'</span></h4>\
+					<h4 class="text-success">Shares: &nbsp;&nbsp;<span>'+volume+'</span></h4>\
 					<h4 class="text-success">Spent: &nbsp;&nbsp;<span>'+currency(spent)+'</span></h4>\
 					<h4 class="text-success">Sell: &nbsp;&nbsp;<span>'+currency(sell)+'</span></h4>\
-					<h4 class="text-success">Income: &nbsp;&nbsp;<span>'+currency(income)+'</span></h4>\
+					<h4 class="text-success">NET: &nbsp;&nbsp;<span>'+currency(income)+'</span></h4>\
 					')
 			}else{
 				alert('Value and Change are important');
